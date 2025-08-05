@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Web + Google Sheet</title>
+</head>
+<body>
+  <h1>ข้อมูลจาก Google Sheet</h1>
+  <ul id="sheet-data"></ul>
+
+  <script>
+    fetch('https://script.google.com/macros/s/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/exec')
+      .then(res => res.json())
+      .then(data => {
+        const ul = document.getElementById('sheet-data');
+        data.forEach(row => {
+          const li = document.createElement('li');
+          li.textContent = row.name + ' - ' + row.email;
+          ul.appendChild(li);
+        });
+      });
+  </script>
+</body>
+</html>
