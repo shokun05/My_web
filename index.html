@@ -4,21 +4,56 @@
   <title>My Web + Google Sheet</title>
 </head>
 <body>
-  <h1>ข้อมูลจาก Google Sheet</h1>
+  <h1>📤 กรอกข้อมูล</h1>
+  <form id="my-form">
+    <input type="text" name="name" placeholder="ชื่อ" required><br>
+    <input type="email" name="email" placeholder="อีเมล" required><br>
+    <button type="submit">ส่งข้อมูล</button>
+  </form>
+
+  <h2>📄 ข้อมูลจาก Google Sheet</h2>
   <ul id="sheet-data"></ul>
 
   <script>
-    fetch('https://shokun05.github.io/My_web/')
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwt2MGHJhvZzTjZM7MNPBZo3MxrIo32Wgid4b8fW7B2q829t3gYpZHbQBNe-ISa9BuS/exec'; // ใส่ URL จาก Google Apps Script
+
+    // ส่งข้อมูล
+    document.getElementById('my-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        name: form.name.value,
+        email: form.email.value
+      };
+
+      fetch(scriptURL, {
+        method: 'POST',
+        body: JSON.stringify(data)
+      })
       .then(res => res.json())
-      .then(data => {
-        const ul = document.getElementById('sheet-data');
-        data.forEach(row => {
-          const li = document.createElement('li');
-          li.textContent = row.name + ' - ' + row.email;
-          ul.appendChild(li);
-        });
+      .then(result => {
+        alert("ส่งข้อมูลสำเร็จ");
+        form.reset();
+        loadData(); // โหลดข้อมูลใหม่
       });
+    });
+
+    // ดึงข้อมูลจาก Google Sheet
+    function loadData() {
+      fetch(scriptURL)
+        .then(res => res.json())
+        .then(data => {
+          const ul = document.getElementById('sheet-data');
+          ul.innerHTML = '';
+          data.forEach(row => {
+            const li = document.createElement('li');
+            li.textContent = `${row.name} - ${row.email}`;
+            ul.appendChild(li);
+          });
+        });
+    }
+
+    loadData(); // โหลดเมื่อเปิดเว็บ
   </script>
 </body>
 </html>
-
