@@ -1,23 +1,96 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>My Web + Google Sheet</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e'); /* เปลี่ยน URL พื้นหลังตรงนี้ได้ */
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    h1, h2 {
+      color: white;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+    }
+
+    .box {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 15px;
+      padding: 20px 30px;
+      margin: 20px 0;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 500px;
+    }
+
+    form input, form button {
+      display: block;
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    form button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    form button:hover {
+      background-color: #45a049;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      background: #f1f1f1;
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 6px;
+    }
+  </style>
 </head>
 <body>
-  <h1>📤 กรอกข้อมูล</h1>
-  <form id="my-form">
-    <input type="text" name="name" placeholder="ชื่อ" required><br>
-    <input type="email" name="email" placeholder="อีเมล" required><br>
-    <button type="submit">ส่งข้อมูล</button>
-  </form>
 
-  <h2>📄 ข้อมูลจาก Google Sheet</h2>
-  <ul id="sheet-data"></ul>
+  <div class="box">
+    <h1>📤 กรอกข้อมูล</h1>
+    <form id="my-form">
+      <input type="text" name="name" placeholder="ชื่อ" required>
+      <input type="email" name="email" placeholder="อีเมล" required>
+      <button type="submit">ส่งข้อมูล</button>
+    </form>
+  </div>
+
+  <div class="box">
+    <h2>📄 ข้อมูลจาก Google Sheet</h2>
+    <ul id="sheet-data"></ul>
+  </div>
 
   <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwt2MGHJhvZzTjZM7MNPBZo3MxrIo32Wgid4b8fW7B2q829t3gYpZHbQBNe-ISa9BuS/exec'; // ใส่ URL จาก Google Apps Script
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwt2MGHJhvZzTjZM7MNPBZo3MxrIo32Wgid4b8fW7B2q829t3gYpZHbQBNe-ISa9BuS/exec';
 
-    // ส่งข้อมูล
     document.getElementById('my-form').addEventListener('submit', function(e) {
       e.preventDefault();
       const form = e.target;
@@ -34,11 +107,10 @@
       .then(result => {
         alert("ส่งข้อมูลสำเร็จ");
         form.reset();
-        loadData(); // โหลดข้อมูลใหม่
+        loadData();
       });
     });
 
-    // ดึงข้อมูลจาก Google Sheet
     function loadData() {
       fetch(scriptURL)
         .then(res => res.json())
@@ -53,7 +125,8 @@
         });
     }
 
-    loadData(); // โหลดเมื่อเปิดเว็บ
+    loadData();
   </script>
+
 </body>
 </html>
