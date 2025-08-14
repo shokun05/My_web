@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>ดูข้อมูล</title>
+<style>
+  body {
+    margin: 0;
+    font-family: sans-serif;
+    background: url('https://wallpapers.com/images/hd/hatsune-miku-background-khdw6cfb4nj78rm0.jpg') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .box {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 15px;
+    color: white;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    color: white;
+  }
+  th, td {
+    border: 1px solid white;
+    padding: 8px;
+    text-align: center;
+  }
+  button {
+    margin: 5px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #00bfff;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+  }
+</style>
+</head>
+<body>
+<div class="box">
+  <button onclick="window.location.href='index.html'">กลับหน้าหลัก</button>
+  <button onclick="window.location.href='data.html'">กรอกข้อมูล</button>
+  <h2>ข้อมูลที่บันทึก</h2>
+  <table id="dataTable">
+    <tr>
+      <th>ชื่อ - นามสกุล</th>
+      <th>เลขนักศึกษา</th>
+      <th>Gmail</th>
+    </tr>
+  </table>
+</div>
+
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbxSdFwayPS4QjxxIH0A9hujWh4flH6H4ovtzo74UDg56AObJbM84eNyg8AXwdwBUi5g/exec"; // URL จาก Apps Script
+
+fetch(scriptURL)
+  .then(res => res.json())
+  .then(data => {
+    let table = document.getElementById("dataTable");
+    data.forEach(row => {
+      let tr = document.createElement("tr");
+      tr.innerHTML = `<td>${row.name}</td><td>${row.studentId}</td><td>${row.gmail}</td>`;
+      table.appendChild(tr);
+    });
+  });
+</script>
+</body>
+</html>

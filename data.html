@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>กรอกข้อมูล</title>
+<style>
+  body {
+    margin: 0;
+    font-family: sans-serif;
+    background: url('https://wallpapers.com/images/hd/hatsune-miku-background-khdw6cfb4nj78rm0.jpg') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .box {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 30px;
+    border-radius: 15px;
+    color: white;
+    text-align: center;
+  }
+  input {
+    padding: 10px;
+    width: 300px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    border: none;
+  }
+  button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 10px;
+    background: #00bfff;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+  }
+</style>
+</head>
+<body>
+<div class="box">
+  <h2>กรอกข้อมูล</h2>
+  <input type="text" id="name" placeholder="ชื่อ - นามสกุล"><br>
+  <input type="text" id="studentId" placeholder="เลขนักศึกษา"><br>
+  <input type="text" id="gmail" placeholder="Gmail (@gmail.com เท่านั้น)"><br>
+  <button onclick="saveData()">บันทึก</button>
+  <button onclick="window.location.href='show.html'">ดูข้อมูล</button>
+  <button onclick="window.location.href='index.html'">กลับหน้าหลัก</button>
+</div>
+
+<script>
+const scriptURL = "https://script.google.com/macros/s/AKfycbxSdFwayPS4QjxxIH0A9hujWh4flH6H4ovtzo74UDg56AObJbM84eNyg8AXwdwBUi5g/exec"; // URL จาก Apps Script
+
+function saveData() {
+  let name = document.getElementById("name").value.trim();
+  let studentId = document.getElementById("studentId").value.trim();
+  let gmail = document.getElementById("gmail").value.trim();
+
+  // ตรวจสอบข้อมูลครบและ Gmail ถูกต้อง
+  if (!name || !studentId || !gmail.endsWith("@gmail.com")) {
+    alert("ไม่สามารถบันทึกได้");
+    return;
+  }
+
+  // ถ้าผ่านเงื่อนไข → ส่งข้อมูลไป Apps Script
+  fetch(scriptURL, {
+    method: "POST",
+    body: JSON.stringify({ name, studentId, gmail })
+  })
+  .then(res => res.text())
+  .then(msg => {
+    alert("บันทึกสำเร็จ");
+    document.getElementById("name").value = "";
+    document.getElementById("studentId").value = "";
+    document.getElementById("gmail").value = "";
+  })
+  .catch(err => {
+    alert("เกิดข้อผิดพลาดในการบันทึก");
+    console.error(err);
+  });
+}
+</script>
+</body>
+</html>
